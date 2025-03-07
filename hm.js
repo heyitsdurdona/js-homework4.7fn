@@ -96,33 +96,72 @@
 
 
 //? Curry
-function multiply(...args) {
-    const inner = (...nextArgs) => {
-        args.push(...nextArgs);
-        return inner;
-    };
+// function multiply(...args) {
+//     const inner = (...nextArgs) => {
+//         args.push(...nextArgs);
+//         return inner;
+//     };
 
-    inner.valueOf = () => args.reduce((acc, curr) => acc * curr, 1);
+//     inner.valueOf = () => args.reduce((acc, curr) => acc * curr, 1);
     
-    return inner;
-}
+//     return inner;
+// }
 
-console.log(+multiply(2)(3)(4)(2)(2))
+// console.log(+multiply(2)(3)(4)(2)(2))
 
 
-function multiply() {
-    let product = 1; 
+// function multiply() {
+//     let product = 1; 
 
-    const inner = (...args) => { 
-        if (args.length === 0) { 
-            return product; 
-        }
-        for (let arg of args) { 
-            product *= arg; 
-        }
-        return inner; 
+//     const inner = (...args) => { 
+//         if (args.length === 0) { 
+//             return product; 
+//         }
+//         for (let arg of args) { 
+//             product *= arg; 
+//         }
+//         return inner; 
+//     };
+
+//     return inner; 
+// }
+// console.log(multiply(2)(3)())
+
+
+
+//? +998(xx)-yyy-yy-yy
+function checkValidPhoneNum(str = 'jkj') {
+    let checkUnknown = true;
+    let checkOrdered = true;
+
+    const unknown = {
+        4: "(",
+        7: ")",
+        8: "-",
+        12: "-",
+        15: "-"
     };
 
-    return inner; 
+    const code = str.startsWith("+998");
+    const first = Number(str.slice(5, 7));
+    const second = Number(str.slice(9, 12));
+    const third = Number(str.slice(13, 15));
+    const fourth = Number(str.slice(16, 18));
+
+
+    if (!code || isNaN(first) || isNaN(second) || isNaN(third) || isNaN(fourth)) {
+        checkOrdered = false;
+    }
+
+    for (let key in unknown) {
+        if (str[key] !== unknown[key]) {
+            checkUnknown = false;
+            break; 
+        }
+    }
+
+    return checkOrdered && checkUnknown;
 }
-console.log(multiply(2)(3)())
+
+console.log(checkValidPhoneNum("+998(90)-234-12-12")); 
+console.log(checkValidPhoneNum("+9989899"))
