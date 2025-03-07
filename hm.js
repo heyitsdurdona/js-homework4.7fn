@@ -96,8 +96,33 @@
 
 
 //? Curry
-const currySum = (a) => (b) => b !== undefined ? currySum(a + b) : a;
+function multiply(...args) {
+    const inner = (...nextArgs) => {
+        args.push(...nextArgs);
+        return inner;
+    };
 
-console.log(currySum(1)(2)(3)(4)()); 
-console.log(currySum(5)(10)(15)());  
+    inner.valueOf = () => args.reduce((acc, curr) => acc * curr, 1);
+    
+    return inner;
+}
 
+console.log(+multiply(2)(3)(4)(2)(2))
+
+
+function multiply() {
+    let product = 1; 
+
+    const inner = (...args) => { 
+        if (args.length === 0) { 
+            return product; 
+        }
+        for (let arg of args) { 
+            product *= arg; 
+        }
+        return inner; 
+    };
+
+    return inner; 
+}
+console.log(multiply(2)(3)())
